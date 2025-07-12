@@ -1,0 +1,27 @@
+<form (ngSubmit)="login()" #loginForm="ngForm">
+  <div>
+    <label for="username">Email</label>
+    <input 
+      type="text" 
+      id="username" 
+      name="username" 
+      [(ngModel)]="username" 
+      required 
+      autocomplete="username" />
+  </div>
+
+  <div>
+    <label for="password">Password</label>
+    <input 
+      type="password" 
+      id="password" 
+      name="password" 
+      [(ngModel)]="password" 
+      required 
+      autocomplete="current-password" />
+  </div>
+
+  <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
+
+  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
+</form>
