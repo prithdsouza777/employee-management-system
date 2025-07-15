@@ -16,18 +16,18 @@ export class Login {
   password = '';
   errorMessage = '';
 
-  constructor(private auth: Auth, private router: Router) {}
+  constructor(private authService: Auth, private router: Router) {}
 
   login() {
-    // Use 'username' key as expected by Django default token auth
-    this.auth.login({ username: this.username, password: this.password }).subscribe({
+    this.authService.login(this.username, this.password).subscribe({
       next: () => {
         this.router.navigate(['/dashboard']);
       },
-      error: (err) => {
-        this.errorMessage = 'Login failed. Please check your credentials.';
-        console.error('Login failed', err);
+      error: () => {
+        this.errorMessage = 'Invalid credentials';
       }
     });
   }
 }
+
+

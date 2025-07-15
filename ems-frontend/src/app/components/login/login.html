@@ -1,27 +1,36 @@
-<form (ngSubmit)="login()" #loginForm="ngForm">
-  <div>
-    <label for="username">Email</label>
-    <input 
-      type="text" 
-      id="username" 
-      name="username" 
-      [(ngModel)]="username" 
-      required 
-      autocomplete="username" />
+<div class="login-wrapper">
+  <div class="login-card">
+    <h2 class="title">Welcome Back</h2>
+    <form (ngSubmit)="login()" #loginForm="ngForm">
+      <div class="input-group">
+        <label for="username">Username</label>
+        <input
+          type="text"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          required
+          placeholder="Enter your username"
+        />
+      </div>
+
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+          placeholder="Enter your password"
+        />
+      </div>
+
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+
+      <button type="submit" [disabled]="!loginForm.valid">Login</button>
+    </form>
   </div>
-
-  <div>
-    <label for="password">Password</label>
-    <input 
-      type="password" 
-      id="password" 
-      name="password" 
-      [(ngModel)]="password" 
-      required 
-      autocomplete="current-password" />
-  </div>
-
-  <button type="submit" [disabled]="!loginForm.form.valid">Login</button>
-
-  <p *ngIf="errorMessage" class="error">{{ errorMessage }}</p>
-</form>
+</div>

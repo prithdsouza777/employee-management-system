@@ -1,5 +1,7 @@
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { TokenInterceptor } from './interceptors/auth-interceptor';
 
 @Component({
   selector: 'app-root',
@@ -10,3 +12,4 @@ import { RouterOutlet } from '@angular/router';
 export class App {
   protected readonly title = signal('ems-frontend');
 }
+

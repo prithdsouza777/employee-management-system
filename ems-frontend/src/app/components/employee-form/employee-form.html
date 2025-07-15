@@ -1,0 +1,174 @@
+<div class="dashboard-container">
+  <app-navbar></app-navbar>
+
+  <main class="main-content">
+    <header class="topbar d-flex justify-content-between align-items-center px-4 py-3 bg-light border-bottom">
+      <h3 class="mb-0">Dashboard</h3>
+      <button (click)="logout()" class="btn btn-outline-danger">Logout</button>
+    </header>
+
+    <section class="content">
+      <div class="container mt-5">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <h4 class="card-title mb-4">
+              {{ isEditMode ? 'Edit Employee' : 'Add Employee' }}
+            </h4>
+ 
+            <form (ngSubmit)="submitForm()" [formGroup]="employeeForm" novalidate>
+              <div class="mb-3 row" >
+                <div class="col-md-6">
+                  <label for="username" class="form-label">Employee Username</label>
+                  <input
+                    type="text"
+                    id="username"
+                    class="form-control"
+                    formControlName="username"
+                    required
+                  />
+                  <div *ngIf="employeeForm.get('username')?.invalid && employeeForm.get('username')?.touched" class="text-danger small">
+                    Employee Username is required.
+                  </div>
+                </div>
+
+                <div class="col-md-6">
+                  <label for="is_staff" class="form-label">Role</label>
+                  <select
+                    id="is_staff"
+                    class="form-select"
+                    formControlName="is_staff"
+                    required
+                  >
+                    <option [value]="false">Employee</option>
+                    <option [value]="true">Admin</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-md-6 mb-3">
+                  <label for="first_name" class="form-label">First Name</label>
+                  <input
+                    type="text"
+                    id="first_name"
+                    class="form-control"
+                    formControlName="first_name"
+                    required
+                  />
+                  <div *ngIf="employeeForm.get('first_name')?.invalid && employeeForm.get('first_name')?.touched" class="text-danger small">
+                    First name is required.
+                  </div>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <label for="last_name" class="form-label">Last Name</label>
+                  <input
+                    type="text"
+                    id="last_name"
+                    class="form-control"
+                    formControlName="last_name"
+                    required
+                  />
+                  <div *ngIf="employeeForm.get('last_name')?.invalid && employeeForm.get('last_name')?.touched" class="text-danger small">
+                    Last name is required.
+                  </div>
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input
+                  type="email"
+                  id="email"
+                  class="form-control"
+                  formControlName="email"
+                  required
+                />
+                <div *ngIf="employeeForm.get('email')?.invalid && employeeForm.get('email')?.touched" class="text-danger small">
+                  Please enter a valid email.
+                </div>
+              </div>
+
+              <!-- Phone Number Field Added Here -->
+              <div class="mb-3">
+                <label for="phone_number" class="form-label">Phone Number</label>
+                <input
+                  type="tel"
+                  id="phone_number"
+                  class="form-control"
+                  formControlName="phone_number"
+                  required
+                />
+                <div *ngIf="employeeForm.get('phone_number')?.invalid && employeeForm.get('phone_number')?.touched" class="text-danger small">
+                  Phone number is required.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="position" class="form-label">Position</label>
+                <input
+                  type="text"
+                  id="position"
+                  class="form-control"
+                  formControlName="position"
+                  required
+                />
+                <div *ngIf="employeeForm.get('position')?.invalid && employeeForm.get('position')?.touched" class="text-danger small">
+                  Position is required.
+                </div>
+              </div>
+
+              <div class="mb-3">
+                <label for="department" class="form-label">Department</label>
+                <input
+                  type="text"
+                  id="department"
+                  class="form-control"
+                  formControlName="department"
+                  required
+                />
+                <div *ngIf="employeeForm.get('department')?.invalid && employeeForm.get('department')?.touched" class="text-danger small">
+                  Department is required.
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="date_of_birth" class="form-label">Date of Birth</label>
+                <input
+                  type="date"
+                  id="date-of-birth"
+                  class="form-control"
+                  formControlName="date_of_birth"
+                  required
+                />
+                <div *ngIf="employeeForm.get('date_of_birth')?.invalid && employeeForm.get('date_of_birth')?.touched" class="text-danger small">
+                  Date of birth is required.
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label for="joining_date" class="form-label">Joining Date</label>
+                <input
+                  type="date"
+                  id="joining_date"
+                  class="form-control"
+                  formControlName="joining_date"
+                  required
+                />
+                <div *ngIf="employeeForm.get('joining_date')?.invalid && employeeForm.get('joining_date')?.touched" class="text-danger small">
+                  Joining date is required.
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary me-2" [disabled]="employeeForm.invalid">
+                  {{ isEditMode ? 'Update' : 'Create' }}
+                </button>
+                <button type="button" class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>

@@ -1,1 +1,55 @@
-<p>employee-list works!</p>
+<div class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Employee List</h2>
+    <a routerLink="/employee-form" class="btn btn-primary">Add Employee</a>
+  </div>
+
+  @if (loading) {
+    <div class="alert alert-info">Loading employees...</div>
+  } @else {
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Employee ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <!-- <th>Phone No.</th> -->
+            <th>Position</th>
+            <!-- <th>Date Of Birth</th>
+            <th>Department</th>
+            <th>Joining Date</th> -->
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (employee of employees; track employee.employee_id) {
+            <tr>
+              <td>{{ employee.user.id }}</td>
+              <td>{{ employee.first_name }} {{ employee.last_name }}</td>
+              <td>{{ employee.email }}</td>
+              <!-- <td>{{ employee.phone_number }}</td>
+              <td>{{ employee.position }}</td>
+              <td>{{ employee.date_of_birth }}</td>
+              <td>{{ employee.department }}</td>
+              <td>{{ employee.joining_date }}</td> -->
+              <td>{{ employee.position }}</td>
+              <td>
+                <button (click)="openEmployeeForm(employee)" class="btn btn-sm btn-outline-primary me-2 text-dark">Edit</button>
+                <button (click)="deleteEmployee(employee)" class="btn btn-sm btn-outline-danger text-dark" >Delete</button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    @if (!errorMessage && employees.length === 0) {
+      <div class="alert alert-warning">No employees found.</div>
+    }
+  }
+
+  @if (errorMessage) {
+    <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
+  }
+</div>
