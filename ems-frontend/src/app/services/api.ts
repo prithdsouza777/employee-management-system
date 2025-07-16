@@ -23,10 +23,14 @@ export class Api {
   }
 
   updateEmployee(employeeUserId: number, employeeData: any): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}employees/${employeeUserId}/`, employeeData);
+    return this.http.patch<any>(`${this.apiUrl}employees/${employeeUserId}/`, employeeData);
   }
 
   deleteEmployee(employeeUserId: number): Observable<any> {
     return this.http.delete<any>(`${this.apiUrl}users/${employeeUserId}/`);
+  }
+
+  changeUserPassword(employeeUserId: number, employeeData: any): Observable<any> {
+    return this.http.post<any>(`${this.apiUrl}users/${employeeUserId}/change-credentials/`,  employeeData);
   }
 }

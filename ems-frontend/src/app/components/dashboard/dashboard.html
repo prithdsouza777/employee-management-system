@@ -1,14 +1,98 @@
-<div class="dashboard-container">
-  <app-navbar></app-navbar>
+<app-navbar>
+  <div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Employee List</h2>
+      <a routerLink="/employee-form" class="btn btn-primary">Add Employee</a>
+    </div>
 
-  <main class="main-content">
-    <header class="topbar">
-      <h3>Dashboard</h3>
-      <button (click)="logout()">Logout</button>
-    </header>
+    @if (loading) {
+      <div class="alert alert-info">Loading employees...</div>
+    } @else {
+      <section class="employee-table-section">
+        <div class="card">
+          <p-table 
+            #dt
+            [value]="employees" 
+            [paginator]="true" 
+            [rows]="5" 
+            [rowsPerPageOptions]="[5, 10, 20]" 
+            sortMode="multiple" 
+            [responsiveLayout]="'scroll'"
+            [globalFilterFields]="['user.id', 'first_name', 'last_name', 'email', 'position']">
 
-    <section class="content">
-      <app-employee-list></app-employee-list>
+            <ng-template pTemplate="caption">
+              <div class="flex">
+                <p-iconfield iconPosition="left" class="ml-auto">
+                  <p-inputicon>
+                    <i class="pi pi-search"></i>
+                  </p-inputicon>
+                  <input 
+                    pInputText 
+                    type="text" 
+                    (input)="dt.filterGlobal($any($event.target).value, 'contains')" 
+                    placeholder="Search keyword" 
+                  />
+                </p-iconfield>
+              </div>
+            </ng-template>
+
+            <ng-template pTemplate="header">
+              <tr>
+                <th pSortableColumn="user.id" style="width:15%">
+                  <div class="flex items-center gap-2">
+                    Employee ID
+                    <p-sortIcon field="user.id"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="first_name" style="width:20%">
+                  <div class="flex items-center gap-2">
+                    Name
+                    <p-sortIcon field="first_name"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="email" style="width:20%">
+                  <div class="flex items-center gap-2">
+                    Email
+                    <p-sortIcon field="email"></p-sortIcon>
+                  </div>
+                </th>
+                <th pSortableColumn="position" style="width:15%">
+                  <div class="flex items-center gap-2">
+                    Position
+                    <p-sortIcon field="position"></p-sortIcon>
+                  </div>
+                </th>
+                <th style="width:20%">Actions</th>
+              </tr>
+            </ng-template>
+
+            <ng-template pTemplate="body" let-employee>
+              <tr>
+                <td>{{ employee.user.id }}</td>
+                <td [innerHTML]="employee.first_name?.trim() 
+                    ? (employee.first_name + ' ' + (employee.last_name || '')) 
+                    : ('<span class=\'text-warning\'>User:</span> ' + employee.user.username)">
+                </td>
+                <td [innerHTML]="employee.email?.trim() ? employee.email : '<span class=\'text-warning\'>Not available</span>'"></td>
+                <td [innerHTML]="employee.position?.trim() ? employee.position : '<span class=\'text-warning\'>Not available</span>'"></td>
+                <td>
+                  <button (click)="openEmployeeDetails(employee)" class="btn btn-sm btn-outline-primary me-2 text-dark">View</button>
+                  <button (click)="openEmployeeForm(employee)" class="btn btn-sm btn-outline-secondary me-2 text-dark">Edit</button>
+                  <button (click)="deleteEmployee(employee)" class="btn btn-sm btn-outline-danger text-dark">Delete</button>
+                </td>
+              </tr>
+            </ng-template>
+          </p-table>
+
+          @if (!errorMessage && employees.length === 0) {
+            <div class="alert alert-warning mt-3">No employees found.</div>
+          }
+        </div>
       </section>
-  </main>
-</div>
+    }
+
+    @if (errorMessage) {
+      <div class="alert alert-danger mt-3">{{ errorMessage }}</div>
+    }
+  </div>
+</app-navbar>

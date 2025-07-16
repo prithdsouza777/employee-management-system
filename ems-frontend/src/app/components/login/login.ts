@@ -15,13 +15,19 @@ export class Login {
   username = '';
   password = '';
   errorMessage = '';
+  isAdmin = false;
 
   constructor(private authService: Auth, private router: Router) {}
 
   login() {
     this.authService.login(this.username, this.password).subscribe({
       next: () => {
-        this.router.navigate(['/dashboard']);
+        this.isAdmin = this.authService.getisAdmin();
+        if (this.isAdmin) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/view-details']);
+        }
       },
       error: () => {
         this.errorMessage = 'Invalid credentials';

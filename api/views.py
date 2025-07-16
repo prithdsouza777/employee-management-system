@@ -8,6 +8,7 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from .serializers import UserLoginSerializer 
+import datetime
 
 class CustomObtainAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
@@ -30,6 +31,30 @@ class UserViewSet(viewsets.ModelViewSet):
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]  
 
+    def perform_create(self, serializer):
+        user = serializer.save()
+        EmployeeProfile.objects.create(user=user)
+
+
+    @action(detail=True, methods=['post'], permission_classes=[permissions.IsAuthenticated], url_path='change-credentials')
+    def change_password(self, request, pk=None):
+        user = request.user
+        target_user = get_object_or_404(User, id=pk)
+        
+        if not user.is_staff and user.id != target_user.id:
+            return Response({'error': 'You do not have permission to change this password.'},
+                            status=status.HTTP_403_FORBIDDEN)
+
+        new_password = request.data.get('new_password')
+        if not new_password:
+            return Response({'error': 'New password is required.'}, status=status.HTTP_400_BAD_REQUEST)
+
+        target_user.set_password(new_password)
+        target_user.save()
+        return Response({'status': f'Password updated for user ID {target_user.id}.'}, status=status.HTTP_200_OK)
+
+        
+
 
 class IsOwnerOrAdmin(permissions.BasePermission):
     """
@@ -39,10 +64,8 @@ class IsOwnerOrAdmin(permissions.BasePermission):
     """
 
     def has_object_permission(self, request, view, obj):
-        # Admins get full access
         if request.user.is_staff:
             return True
-        # Employees get access only if the profile belongs to them
         return obj.user == request.user
 
 
@@ -83,13 +106,13 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
 
         profile_data = {
             'user': user,
-            'email': request.data.get('email'),
+            'email': None if request.data.get('email') == '' else request.data.get('email'),
             'first_name': request.data.get('first_name'),
             'last_name': request.data.get('last_name'),
             'phone_number': request.data.get('phone_number'),
             'position': request.data.get('position'),
             'department': request.data.get('department'),
-            'joining_date': request.data.get('joining_date'),
+            'joining_date': request.data.get('joining_date', datetime.date.today()),
             'date_of_birth': request.data.get('date_of_birth'),
         }
 

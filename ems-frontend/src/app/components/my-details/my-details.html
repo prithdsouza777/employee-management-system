@@ -1,0 +1,121 @@
+<app-navbar [pageTitle]="'Employee Deatils'">
+  <div class="dashboard-container">
+    <main class="main-content">
+      <section class="content">
+        <div class="container mt-3">
+          <div class="card shadow-sm">
+            <div class="card-body">
+
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label class="form-label">Employee ID</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-id-card me-2 text-primary"></i>
+                    {{ employee?.user.id }}
+                    <span *ngIf="!employee?.user?.id" class="text-warning">Not available</span>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Employee Username</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-user me-2 text-primary"></i>
+                    {{ employee?.user.username }}
+                    <span *ngIf="!employee?.user?.username" class="text-warning">Not available</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label class="form-label">Role</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-shield me-2 text-primary"></i>
+                    {{ employee?.is_staff ? 'Admin' : 'Employee' }}
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-envelope me-2 text-primary"></i>
+                    {{ employee?.email }}
+                    <span *ngIf="!employee?.email" class="text-warning">Not available</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label class="form-label">First Name</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-id-card me-2 text-primary"></i>
+                    {{ employee?.first_name }}
+                    <span *ngIf="!employee?.first_name" class="text-warning">Not available</span>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Last Name</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-id-card me-2 text-primary"></i>
+                    {{ employee?.last_name }}
+                    <span *ngIf="!employee?.last_name" class="text-warning">Not available</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label class="form-label">Phone Number</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-phone me-2 text-primary"></i>
+                    {{ employee?.phone_number }}
+                    <span *ngIf="!employee?.phone_number" class="text-warning">Not available</span>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Position</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-briefcase me-2 text-primary"></i>
+                    {{ employee?.position }}
+                    <span *ngIf="!employee?.position" class="text-warning">Not available</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="mb-3 row">
+                <div class="col-md-6">
+                  <label class="form-label">Department</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-building me-2 text-primary"></i>
+                    {{ employee?.department }}
+                    <span *ngIf="!employee?.department" class="text-warning">Not available</span>
+                  </p>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Date of Birth</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-calendar me-2 text-primary"></i>
+                    {{ employee?.date_of_birth | date:'mediumDate' }}
+                    <span *ngIf="!employee?.date_of_birth" class="text-warning">Not available</span>
+                  </p>
+                </div>
+              </div>
+
+              <div class="mb-4 row">
+                <div class="col-md-6">
+                  <label class="form-label">Joining Date</label>
+                  <p class="form-control-plaintext fw-bold">
+                    <i class="pi pi-calendar-plus me-2 text-primary"></i>
+                    {{ employee?.joining_date | date:'mediumDate' }}
+                    <span *ngIf="!employee?.joining_date" class="text-warning">Not available</span>
+                  </p>
+                </div>
+                <div class="col-md-6"></div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+</app-navbar>

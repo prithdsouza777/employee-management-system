@@ -77,3 +77,19 @@ button {
     cursor: not-allowed;
   }
 }
+
+
+.login-card {
+  input {
+    background-color: #fff !important;
+    color: #000 !important;
+    border-color: #ccc !important;
+
+    &:focus {
+      border-color: #667eea !important;
+      outline: none !important;
+      background-color: #fff !important;
+      color: #000 !important;
+    }
+  }
+}
