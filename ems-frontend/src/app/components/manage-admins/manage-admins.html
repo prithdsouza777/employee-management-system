@@ -1,9 +1,5 @@
-<app-navbar>
+<app-navbar  [pageTitle]="'Admin Management'">
   <div class="container mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-      <h2>Employee List</h2>
-      <p-button icon="pi pi-plus" iconPos="right" label="Add Employee" severity="primary" [raised]="true" [routerLink]="['/employee-form']" [queryParams]="{ isEditMode: 'false' }"></p-button>
-    </div>
 
     @if (loading) {
       <p-message severity="info" text="Loading employees..."/>
@@ -19,12 +15,9 @@
           <p-table 
             #dt
             [value]="employees" 
-            [paginator]="true" 
-            [rows]="5" 
-            [rowsPerPageOptions]="[5, 10, 20]" 
             sortMode="multiple" 
             [responsiveLayout]="'scroll'"
-            [globalFilterFields]="['user.id', 'first_name', 'last_name', 'email', 'position']">
+            [globalFilterFields]="['user.id', 'user.username', 'first_name', 'last_name', 'position']">
 
             <ng-template pTemplate="caption">
               <div class="flex">
@@ -50,16 +43,16 @@
                     <p-sortIcon field="user.id"></p-sortIcon>
                   </div>
                 </th>
+                <th pSortableColumn="user.id">
+                  <div class="flex items-center gap-2">
+                    Username
+                    <p-sortIcon field="user.id"></p-sortIcon>
+                  </div>
+                </th>
                 <th pSortableColumn="first_name" >
                   <div class="flex items-center gap-2">
                     Name
                     <p-sortIcon field="first_name"></p-sortIcon>
-                  </div>
-                </th>
-                <th pSortableColumn="email" >
-                  <div class="flex items-center gap-2">
-                    Email
-                    <p-sortIcon field="email"></p-sortIcon>
                   </div>
                 </th>
                 <th pSortableColumn="position" >
@@ -68,27 +61,26 @@
                     <p-sortIcon field="position"></p-sortIcon>
                   </div>
                 </th>
-                <th >Actions</th>
+                <th >Remove Access</th>
               </tr>
             </ng-template>
 
             <ng-template pTemplate="body" let-employee>
-              <tr>
-                <td>{{ employee.user.id }}</td>
-                <td [innerHTML]="employee.first_name?.trim() 
-                    ? (employee.first_name + ' ' + (employee.last_name || '')) 
-                    : ('<span class=\'text-warning\'>User:</span> ' + employee.user.username)">
-                </td>
-                <td [innerHTML]="employee.email?.trim() ? employee.email : '<span class=\'text-warning\'>Not available</span>'"></td>
-                <td [innerHTML]="employee.position?.trim() ? employee.position : '<span class=\'text-warning\'>Not available</span>'"></td>
-                <td>
-                  <p-button label="View" icon="pi pi-eye" severity="primary" size="small" [outlined]="true" (onClick)="openEmployeeDetails(employee)" styleClass="me-2 text-dark"/>
-                  <p-button label="Edit" icon="pi pi-pencil" severity="secondary" size="small" [outlined]="true" (onClick)="openEmployeeForm(employee)" styleClass="me-2 text-dark"/>
-                  <p-button label="Delete" icon="pi pi-trash" severity="danger" size="small" [outlined]="true" (onClick)="deleteEmployee($event, employee)" styleClass="me-2 text-dark"/>
-
-                </td>
-              </tr>
+                <ng-container *ngIf="employee.user?.is_staff">
+                <tr>
+                    <td>{{ employee.user.id }}</td>
+                    <td [innerHTML]="employee.user.username || '<span class=\'text-warning\'>Not available</span>'"></td>
+                    <td [innerHTML]="employee.first_name?.trim() 
+                        ? (employee.first_name + ' ' + (employee.last_name || '')) 
+                        : '<span class=\'text-warning\'>Not available</span>'"></td>
+                    <td [innerHTML]="employee.position || '<span class=\'text-warning\'>Not available</span>'"></td>
+                    <td>
+                        <p-button icon="pi pi-times" (onClick)="removeAdminAccess($event, employee)" size= "small" [rounded]="true" [text]="true" [raised]="true" severity="danger" />
+                    </td>
+                </tr>
+                </ng-container>
             </ng-template>
+
           </p-table>
         </p-card>
       </section>

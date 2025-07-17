@@ -9,7 +9,7 @@
 
 .login-card {
   background-color: #ffffff;
-  padding: 2.5rem 2rem;
+  padding: 2rem;
   border-radius: 1rem;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
   width: 100%;
@@ -32,16 +32,17 @@
 
   label {
     margin-bottom: 0.5rem;
+    margin-left: 0.5rem;
     font-weight: 500;
     color: #444;
   }
 
   input {
-    padding: 0.75rem 1rem;
+    padding: 0.65rem;
     border: 1px solid #ccc;
     border-radius: 0.5rem;
     font-size: 1rem;
-    transition: border 0.3s;
+    width: 100%;
 
     &:focus {
       border-color: #667eea;
@@ -93,3 +94,14 @@ button {
     }
   }
 }
+
+:host ::ng-deep .p-password {
+  width: 100% !important;
+  display: block;
+}
+
+:host ::ng-deep .p-password .p-inputtext {
+  width: 100% !important;
+  box-sizing: border-box;
+}
+

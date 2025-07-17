@@ -2,28 +2,24 @@
   <div class="login-card">
     <h2 class="title">Welcome Back</h2>
     <form (ngSubmit)="login()" #loginForm="ngForm">
-      <div class="input-group">
-        <label for="username">Username</label>
-        <input
-          type="text"
-          id="username"
-          name="username"
-          [(ngModel)]="username"
-          required
-          placeholder="Enter your username"
-        />
+      <div class="input-group"> <label for="username">Username</label>
+        <div class="p-inputgroup"> <input id="username"
+            name="username"
+            [(ngModel)]="username"
+            required
+            placeholder="Enter your username"
+            type="text" pInputText />
+        </div>
       </div>
 
-      <div class="input-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          name="password"
-          [(ngModel)]="password"
-          required
-          placeholder="Enter your password"
-        />
+      <div class="input-group"> <label for="password">Password</label>
+        <div class="p-inputgroup"> <p-password id="password"
+            name="password"
+            [(ngModel)]="password"
+            required  [toggleMask]="true" [feedback]="false"
+            placeholder="Enter your password"
+            size="large"/>
+        </div>
       </div>
 
       @if (errorMessage) {

@@ -6,10 +6,8 @@
       <nav>
         <a href="/dashboard" routerLinkActive="active">Home</a>
         <a href="/employee-form?isEditMode=false">Add Employee</a>
-        <a routerLink="/settings" routerLinkActive="active">View Employee</a>
-        <a routerLink="/settings" routerLinkActive="active">List Admins</a>
-        <a routerLink="/settings" routerLinkActive="active">Add Admin</a>
-        <a routerLink="/employee-form" routerLinkActive="active">Update Details</a>
+        <a routerLink="/manage-admins" routerLinkActive="active">Manage Admins</a>
+        <a href="/employee-form" routerLinkActive="active">Update Details</a>
         <a routerLink="/view-details" routerLinkActive="active">View Details</a>
         <a routerLink="/reset-credentials" routerLinkActive="active">Reset Password</a>
       </nav>
@@ -25,7 +23,7 @@
   <main class="main-content">
     <header class="topbar">
       <h3>{{ pageTitle }}</h3>
-      <button (click)="logout()">Logout</button>
+      <p-button label="Logout" icon="pi pi-sign-out" severity="secondary" size="small" (onClick)="logout()"></p-button>
     </header>
 
     <section class="page-content">

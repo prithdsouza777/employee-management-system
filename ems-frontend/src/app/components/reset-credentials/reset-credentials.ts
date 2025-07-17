@@ -7,6 +7,7 @@ import { Api } from '../../services/api';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { Auth } from '../../services/auth';
+import { UiComponents } from '../../ui/ui-components';
 
 @Component({
   selector: 'app-reset-credentials',
@@ -26,16 +27,19 @@ export class ResetCredentials {
     private auth: Auth,
     private messageService: MessageService,
     private router: Router,
+    private uicomponents: UiComponents,
   ) {}
 
   ngOnInit() {
-    this.userId = this.auth.getUserId();
+    /*this.route.queryParams.subscribe(params => {
+        this.userId = params['userId'] ? +params['userId'] : null;
+    });
 
     if (!this.userId) {
-      this.route.queryParams.subscribe(params => {
-        this.userId = params['userId'] ? +params['userId'] : null;
-      });
-    }
+      this.userId = this.auth.getUserId();
+      
+    }*/
+    this.userId = this.auth.getUserId();
 
     this.passwordForm = this.fb.group({
       new_password: this.fb.control('', [Validators.required, Validators.minLength(8)]),
@@ -52,28 +56,21 @@ export class ResetCredentials {
   onSubmit() {
     if (this.passwordForm.valid) {
       const new_password  = this.passwordForm.value;
-      console.log('Password updated to:', new_password, this.userId);
 
       if (this.userId !== null) {
         this.api.changeUserPassword(this.userId, new_password).subscribe({
           next: () => {
-            this.messageService.add({
-              severity: 'success',
-              summary: 'Password Changed',
-              detail: `Employee ID ${this.userId} password has been update.`,
-              life: 3000
-            });
-             this.router.navigate(['/change-credentials']);
+            this.uicomponents.success('Update Successful',
+              `Employee ID ${this.userId} Password was updated.`
+            );
+            this.passwordForm.reset();
           },
           error: (err) => {
             console.error('Update failed', err),
-            this.messageService.add({
-              severity: 'error',
-              summary: 'Update Failed',
-              detail: `Employee ID ${this.userId} password not be updated}.`,
-              life: 3000
-          });
-          }
+            this.uicomponents.error('Update Failed',
+              `Employee ID ${this.userId} Password was not update.`
+            );
+          } 
         });
       } else {
         alert('User ID is not available.');

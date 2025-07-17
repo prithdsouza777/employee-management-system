@@ -33,8 +33,8 @@
                 formControlName="is_staff"
                 required
               >
-                <option [value]="false">Employee</option>
-                <option [value]="true">Admin</option>
+                <option [ngValue]="false">Employee</option>
+                <option [ngValue]="true">Admin</option>
               </select>
             </div>
           </div>
@@ -152,6 +152,11 @@
             </div>
           </div>
 
+          <div class="d-flex" [class.d-none]="!isAdmin"> 
+            <div [class.d-none]="!isEditMode">
+              <button type="button" class="btn btn-outline-danger" (click)="resetpassword($event)">Reset Password</button>
+            </div>
+          </div>
           <div class="d-flex justify-content-end">
             <button 
               type="submit" 

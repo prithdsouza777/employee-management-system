@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Auth } from '../../services/auth';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-navbar',
-  imports: [RouterLink],
+  imports: [RouterLink, ButtonModule],
   templateUrl: './navbar.html',
   styleUrl: './navbar.scss'
 })

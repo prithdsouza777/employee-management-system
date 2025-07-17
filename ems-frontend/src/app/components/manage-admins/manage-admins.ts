@@ -1,21 +1,24 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
-import { Navbar } from '../navbar/navbar';
+import { Component } from '@angular/core';
 import { Api } from '../../services/api';
+import { Router, RouterLink } from '@angular/router';
+import { UiComponents } from '../../ui/ui-components';
+import { Navbar } from '../navbar/navbar';
 import { TableModule } from 'primeng/table';
 import { InputTextModule } from 'primeng/inputtext';
-import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
+import { IconFieldModule } from 'primeng/iconfield';
 import { ButtonModule } from 'primeng/button';
-import { UiComponents } from '../../ui/ui-components';
 import { MessageModule } from 'primeng/message';
 import { CardModule } from 'primeng/card';
+import { CommonModule } from '@angular/common';
 import { ToggleSwitchModule } from 'primeng/toggleswitch';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  selector: 'app-dashboard',
+  selector: 'app-manage-admins',
   imports: [
-    RouterLink,
+    FormsModule,
+    CommonModule,
     Navbar,
     TableModule,
     InputTextModule,
@@ -26,10 +29,10 @@ import { ToggleSwitchModule } from 'primeng/toggleswitch';
     CardModule,
     ToggleSwitchModule,
   ],
-  templateUrl: './dashboard.html',
-  styleUrl: './dashboard.scss'
+  templateUrl: './manage-admins.html',
+  styleUrl: './manage-admins.scss'
 })
-export class Dashboard implements OnInit {
+export class ManageAdmins {
   employees: any[] = [];
   loading = true;
   errorMessage = '';
@@ -58,40 +61,25 @@ export class Dashboard implements OnInit {
     });
   }
 
-  openEmployeeDetails(employee: any): void {
-    if (employee) {
-      this.router.navigate(['/view-details'], {
-        queryParams: { userId: employee.user.id }
-      });
-    }
-  }
+  async removeAdminAccess(event: Event, employee: any): Promise<void> {
+    const formData = { user: { is_staff: false }};
 
-  openEmployeeForm(employee: any): void {
-    if (employee) {
-      this.router.navigate(['/employee-form'], {
-        queryParams: { currentUserId: employee.user.id }
-      });
-    }
-  }
-
-  async deleteEmployee(event: Event, employee: any): Promise<void> {
     const confirmed = await this.uicomponents.confirmDelete(
       event,
-      `Do you wish to Delete employee ID ${employee.user.id}?`,
+      `Do you wish to Remove Admin access for employee ID: ${employee.user.id}?`,
       'Confirmation'
     );
 
     if (!confirmed) return;
 
-    this.api.deleteEmployee(employee.user.id).subscribe({
+    this.api.updateEmployee(employee.user.id, formData).subscribe({
       next: () => {
-        this.employees = this.employees.filter(e => e.user.id !== employee.user.id);
-        this.uicomponents.success('Employee Deleted', `Employee ID ${employee.user.id} has been deleted.`);
+        this.router.navigate(['/manage-admins'])
+        this.uicomponents.success('Removed Admin Access', `Employee ID: ${employee.user.id} is no more an Admin.`);
       },
       error: (err) => {
-        console.error('Failed to delete employee', err);
         const errorMessage = err?.error?.detail || 'Could not delete employee. Please try again.';
-        this.uicomponents.error('Error', errorMessage);
+        this.uicomponents.error('Failed to Remove Admin Access', `Employee ID: ${employee.user.id} is still an Admin.`);
       }
     });
   }

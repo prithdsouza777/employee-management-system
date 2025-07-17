@@ -3,11 +3,13 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'; 
 import { Auth } from '../../services/auth'; 
 import { Router } from '@angular/router';
+import { PasswordModule } from 'primeng/password';
+import { IconFieldModule } from 'primeng/iconfield';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule, PasswordModule],
   templateUrl: './login.html',
   styleUrls: ['./login.scss']
 })

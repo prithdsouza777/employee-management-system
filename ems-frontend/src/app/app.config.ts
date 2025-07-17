@@ -6,8 +6,8 @@ import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/
 import { TokenInterceptor } from './interceptors/auth-interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
-import Aura from '@primeuix/themes/aura';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
+import MyPreset from './mypreset';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -17,10 +17,11 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     provideHttpClient(withInterceptors([TokenInterceptor])),
     MessageService,
+    ConfirmationService,
     provideAnimationsAsync(),
     providePrimeNG( {
       theme: {
-                preset: Aura,
+                preset: MyPreset,
                 options: {
                     darkModeSelector: false || 'none'
                 }

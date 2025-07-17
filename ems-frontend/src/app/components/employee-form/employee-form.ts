@@ -5,13 +5,13 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Navbar } from '../navbar/navbar';
 import { Auth } from '../../services/auth';
 import { CommonModule } from '@angular/common';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
+import { UiComponents } from '../../ui/ui-components';
+import { event } from '@primeuix/themes/aura/timeline';
 
 @Component({
   selector: 'app-employee-form',
   templateUrl: './employee-form.html',
-  imports: [CommonModule, ReactiveFormsModule, Navbar, ToastModule],
+  imports: [CommonModule, ReactiveFormsModule, Navbar],
   styleUrls: ['./employee-form.scss'],
 })
 export class EmployeeForm implements OnInit {
@@ -27,7 +27,7 @@ export class EmployeeForm implements OnInit {
     private router: Router,
     private authService: Auth,
     private route: ActivatedRoute,
-    private messageService: MessageService,
+    private uicomponents: UiComponents,
   ) {}
 
   ngOnInit(): void {
@@ -123,7 +123,6 @@ export class EmployeeForm implements OnInit {
       if (formData.department === '') delete formData.department;
       if (formData.joining_date === '') delete formData.joining_date;
       if (formData.date_of_birth === '') delete formData.date_of_birth;
-      console.log(formData)
     }
 
     
@@ -143,47 +142,62 @@ export class EmployeeForm implements OnInit {
           this.router.navigate(['/employee-form'], {
             queryParams: { isEditMode: true, currentUserId: this.currentUserId },
           });
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Employee Updated',
-            detail: `Employee ID ${this.currentUserId} has been updated.`,
-            life: 3000
-          });
+          this.uicomponents.success(
+            'Details Update',
+            `Employee ID ${this.currentUserId} has been updated.`
+          );
         },
         error: (err) => {
           console.error('Update failed', err),
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Update Failed',
-            detail: `Employee ID ${this.currentUserId} could not be updated}.`,
-            life: 3000
-          });
+          this.uicomponents.error('Update Failed',
+            `Employee ID ${this.currentUserId} was not updated.`
+          );
+
         }
       });
     } else {
       this.api.createEmployee(formData).subscribe({
         next: () => {
-          alert('Employee Created Successfully!');
-          this.messageService.add({
-            severity: 'success',
-            summary: 'Employee Created',
-            detail: `Employee ID ${this.currentUserId} has been created.`,
-            life: 3000
-          });
+          this.uicomponents.success('Employee Created',
+          `Employee ID ${this.currentUserId} has been created.`
+        );
           this.employeeForm.reset();
           this.router.navigate(['/employee-form'], { queryParams: { isEditMode: false } });
         },
         error: (err) => {
           console.error('Create failed', err),
-          this.messageService.add({
-            severity: 'error',
-            summary: 'Create Failed',
-            detail: `Employee ID ${this.currentUserId} was not created.`,
-            life: 3000
-          });
-        }
+          this.uicomponents.error('Create Failed',
+              `Employee ID ${this.currentUserId} was not created.`
+            );
+          }
       });
     }
+  }
+
+async resetpassword(event: Event): Promise<void> {
+  const confirmed = await this.uicomponents.confirmDelete(
+    event,
+    `Do you wish to reset password for employee ID ${this.currentUserId}?`,
+    'Confirmation'
+  );
+
+  if (!confirmed) {
+    return;
+  }
+
+  this.api.changeUserPassword(this.currentUserId as number, { new_password: 'defaultpassword123' }).subscribe({
+    next: () => {
+      this.uicomponents.success(
+        'Reset Successful',
+        `Employee ID ${this.currentUserId} Password was reset.`);
+    },
+    error: (err) => {
+      console.error('Update failed', err);
+      this.uicomponents.error(
+        'Update Failed',`Employee ID ${this.currentUserId} Password was not reset.`);
+    }
+  });
+
   }
 
   cancel(): void {
