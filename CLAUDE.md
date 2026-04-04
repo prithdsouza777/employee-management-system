@@ -2,7 +2,7 @@
 
 ## Project Structure
 - **Backend**: Django 6.0 + Django REST Framework 3.17 (in `/ems_backend/` and `/api/`)
-- **Frontend**: Angular 20 + PrimeNG 20 + Bootstrap 5 (in `/ems-frontend/`)
+- **Frontend**: Angular 21 + PrimeNG 21 + Bootstrap 5 (in `/ems-frontend/`)
 - **Database**: PostgreSQL
 
 ## Development Setup

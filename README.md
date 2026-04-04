@@ -8,8 +8,8 @@ A full-stack employee management application with role-based access control, bui
 |-------|-----------|---------|
 | Backend | Django | 6.0.3 |
 | API | Django REST Framework | 3.17.1 |
-| Frontend | Angular | 20 |
-| UI Components | PrimeNG | 20 |
+| Frontend | Angular | 21 |
+| UI Components | PrimeNG | 21 |
 | CSS | Bootstrap | 5.3 |
 | Database | PostgreSQL | 15+ |
 | Auth | Token Authentication | DRF built-in |
