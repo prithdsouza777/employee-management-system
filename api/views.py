@@ -24,9 +24,6 @@ class CustomObtainAuthToken(ObtainAuthToken):
 
 
 class UserViewSet(viewsets.ModelViewSet):
-    """
-    Admin-only API to view, create, edit, delete users.
-    """
     queryset = User.objects.all().order_by('id')
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAdminUser]  
@@ -57,12 +54,6 @@ class UserViewSet(viewsets.ModelViewSet):
 
 
 class IsOwnerOrAdmin(permissions.BasePermission):
-    """
-    Custom permission: 
-    - Admins can access all
-    - Employees can access only their own profile
-    """
-
     def has_object_permission(self, request, view, obj):
         if request.user.is_staff:
             return True
@@ -70,10 +61,6 @@ class IsOwnerOrAdmin(permissions.BasePermission):
 
 
 class EmployeeProfileViewSet(viewsets.ModelViewSet):
-    """
-    Employees can only view/update their own profile.
-    Admins can view/update all profiles.
-    """
     queryset = EmployeeProfile.objects.all()
     serializer_class = EmployeeProfileSerializer
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrAdmin]
@@ -90,9 +77,6 @@ class EmployeeProfileViewSet(viewsets.ModelViewSet):
 
     @action(detail=False, methods=['post'], permission_classes=[permissions.IsAdminUser], url_path='create_full_employee')
     def create_full_employee(self, request):
-        """
-        Admin-only action to create User + EmployeeProfile at once.
-        """
         user_data = {
             'username': request.data.get('username'),
             'password': 'defaultpassword123',  
